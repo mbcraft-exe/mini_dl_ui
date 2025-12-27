@@ -36,7 +36,7 @@ No installation step required.
 Simply install the lib with `pip`
 
 ```bash
-pip install mini_dl_ui
+pip install mini-download-ui
 ```
 
 ---
@@ -50,12 +50,29 @@ import time
 ui = DownloadUI()
 
 for i in range(101):
-    ui.set_progress(i)
+    ui.progress(i)
     ui.log(f"Downloading package {i}/100")
     time.sleep(0.05)
 
-ui.finish()
+ui.close()
 ```
+
+# Alternative Usage
+
+```python
+from mini_dl_ui import DownloadUI
+import time
+
+with DownloadUI() as ui:
+    for i in range(101):
+        if i in (10, 40, 70):
+            ui.log(f"Downloading package {i}/100")
+        ui.progress(i)
+        time.sleep(0.03)
+    ui.log("Finished.")
+    time.sleep(0.5)
+```
+
 # Example Terminal Output
 
 ```text
@@ -79,10 +96,10 @@ ui = DownloadUI(fill='=')
 
 def worker():
     for i in range(101):
-        ui.set_progress(i)
+        ui.progress(i)
         ui.log(f"Chunk {i} received")
         time.sleep(0.03)
-    ui.finish()
+    ui.close()
 
 threading.Thread(target=worker).start()
 ```
